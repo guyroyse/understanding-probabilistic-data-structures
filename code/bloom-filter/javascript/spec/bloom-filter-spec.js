@@ -114,11 +114,11 @@ describe("BloomFilter", function() {
   })
 
   it("complains when created with too few hashes", function() {
-    expect(() => new BloomFilter(FILTER_SIZE, 1)).to.throw("You can only have 2, 3, or 4 hashes")
+    expect(() => new BloomFilter(FILTER_SIZE, 0)).to.throw("You must have at least 1 hash")
   })
 
   it("complains when created with too many hashes", function() {
-    expect(() => new BloomFilter(FILTER_SIZE, 5)).to.throw("You can only have 2, 3, or 4 hashes")
+    expect(() => new BloomFilter(FILTER_SIZE, 5)).to.throw("You cannot have more than 4 hashes")
   })
 
 })
