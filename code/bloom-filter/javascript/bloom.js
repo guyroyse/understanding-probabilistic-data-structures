@@ -9,8 +9,8 @@ class BloomFilter {
 
     this.bits = new Array(size).fill(false)
     this.hashes = new Array(hashCount)
-      .fill(null)
-      .map(_ => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER))
+      .fill(Number.MAX_SAFE_INTEGER)
+      .map(max => Math.floor(Math.random() * max))
       .map(seed => s => murmur.v3(s, seed))
   }
 
