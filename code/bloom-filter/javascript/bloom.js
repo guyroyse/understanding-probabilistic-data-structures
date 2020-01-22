@@ -1,13 +1,4 @@
-const fnv = require('fnv-plus')
 const murmur = require('murmurhash')
-const jenkins = require('jenkins-hash')
-
-const hashFunctions = [
-  s => fnv.fast1a32(s),
-  s => murmur.v2(s),
-  s => murmur.v3(s),
-  s => jenkins.hashlittle(s, 0xbeeff00d)
-]
 
 class BloomFilter {
 
