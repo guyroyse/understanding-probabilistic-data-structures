@@ -34,7 +34,7 @@ describe("BloomFilter", function() {
     })
 
     it("all the bits are false", function() {
-      expect(subject.bits.every(bit => bit)).to.be.false
+      expect(subject.bits.every(bit => bit == false)).to.be.true
     })
 
     it("has no strings", function() {
