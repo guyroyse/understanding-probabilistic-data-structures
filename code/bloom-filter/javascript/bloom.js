@@ -17,11 +17,9 @@ class BloomFilter {
     if (hashCount < 1) throw "You must have at least 1 hash"
     if (hashCount > hashFunctions.length) throw "You cannot have more than 4 hashes"
 
-    this.hashes = hashFunctions.slice(0, hashCount)
-
     this.bits = new Array(size)
     this.bits.fill(false)
-
+    this.hashes = hashFunctions.slice(0, hashCount)
   }
 
   get size() {
