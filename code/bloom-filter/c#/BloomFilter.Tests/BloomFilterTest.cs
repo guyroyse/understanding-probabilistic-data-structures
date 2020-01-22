@@ -6,9 +6,11 @@ namespace BloomFilter.Tests
 {
     public class Constants
     {
-        public const int FILTER_SIZE = 16;
-        public const int HASH_COUNT = 2;
-        public const int DEFAULT_HASH_COUNT = 3;
+
+        public const int DEFAULT_FILTER_SIZE = 1024;
+        public const int DEFAULT_HASH_COUNT = 8;
+        public const int FILTER_SIZE = 512;
+        public const int HASH_COUNT = 4;
     }
 
     public class EmptyBloomFilterTest
@@ -17,13 +19,13 @@ namespace BloomFilter.Tests
 
         public EmptyBloomFilterTest()
         {
-            Subject = new BloomFilter(Constants.FILTER_SIZE);
+            Subject = new BloomFilter();
         }
 
         [Fact]
         public void ItStoresTheSize()
         {
-            Assert.Equal(Constants.FILTER_SIZE, Subject.Size);
+            Assert.Equal(Constants.DEFAULT_FILTER_SIZE, Subject.Size);
         }
 
         [Fact]
@@ -34,7 +36,7 @@ namespace BloomFilter.Tests
 
         [Fact]
         public void ItHasTheExpectedNumberOfBits() {
-            Assert.Equal(Constants.FILTER_SIZE, Subject.Bits.Length);
+            Assert.Equal(Constants.DEFAULT_FILTER_SIZE, Subject.Bits.Length);
         }
 
         [Fact]
@@ -63,7 +65,7 @@ namespace BloomFilter.Tests
 
         public UsedBloomFilterTest()
         {
-            Subject = new BloomFilter(Constants.FILTER_SIZE);
+            Subject = new BloomFilter();
             Subject.Add("foo");
         }
 
@@ -105,7 +107,7 @@ namespace BloomFilter.Tests
 
         public WellUsedBloomFilterTest()
         {
-            Subject = new BloomFilter(Constants.FILTER_SIZE);
+            Subject = new BloomFilter();
             Subject.Add("foo");
             Subject.Add("bar");
             Subject.Add("baz");
@@ -139,19 +141,31 @@ namespace BloomFilter.Tests
         }
     }
 
-    public class BloomFilterWithSpecifiedHashCountTest
+    public class BloomFilterWithSpecifiedSizeAndHashCountTest
     {
         private readonly BloomFilter Subject;
 
-        public BloomFilterWithSpecifiedHashCountTest()
+        public BloomFilterWithSpecifiedSizeAndHashCountTest()
         {
             Subject = new BloomFilter(Constants.FILTER_SIZE, Constants.HASH_COUNT);
+        }
+
+        [Fact]
+        public void ItStoresTheExpectedSize()
+        {
+            Assert.Equal(Constants.FILTER_SIZE, Subject.Size);
         }
 
         [Fact]
         public void ItStoresTheExpectedHashCount()
         {
             Assert.Equal(Constants.HASH_COUNT, Subject.HashCount);
+        }
+
+        [Fact]
+        public void ItHasTheExpectedNumberOfBits()
+        {
+            Assert.Equal(Constants.FILTER_SIZE, Subject.Bits.Length);
         }
 
         [Fact]
@@ -167,13 +181,6 @@ namespace BloomFilter.Tests
         {
             var ex = Assert.Throws<ArgumentException>(() => new BloomFilter(Constants.FILTER_SIZE, 0)); 
             Assert.Equal("You must have at least 1 hash", ex.Message);
-        }
-
-        [Fact]
-        public void ItComplainsWhenCreatedWithTooManyHashes()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => new BloomFilter(Constants.FILTER_SIZE, 4)); 
-            Assert.Equal("You cannot have more than 3 hashes", ex.Message);
         }
 
         [Fact]

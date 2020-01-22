@@ -7,16 +7,10 @@ namespace BloomFilter
 {
     public class BloomFilter
     {
-        private readonly Func<byte[], uint>[] AllHashes = {
-            bytes => Fnv1a.Hash32(bytes),
-            bytes => MurmurHash3.Hash32(bytes, 0xbeeff00d),
-            bytes => XXHash.Hash32(bytes, 0xbeeff00d)
-        };
-
         public readonly bool[] Bits;
         public readonly Func<byte[], uint>[] Hashes;
 
-        public BloomFilter(int size, int hashCount = 3)
+        public BloomFilter(int size = 1024, int hashCount = 8)
         {
             if (size < 1)
                 throw new ArgumentException("You must have at least 1 item in the filter");
@@ -24,11 +18,17 @@ namespace BloomFilter
             if (hashCount < 1)
                 throw new ArgumentException("You must have at least 1 hash");
 
-            if (hashCount > AllHashes.Length)
-                throw new ArgumentException("You cannot have more than 3 hashes");
-
             Bits = new bool[size];
-            Hashes = AllHashes.Take(hashCount).ToArray();
+
+            var rand = new Random();
+            Hashes = Enumerable
+                .Repeat(int.MaxValue, hashCount)
+                .Select(max => rand.Next(0, max))
+                .Select(seed => {
+                    Func<byte[], uint> func = bytes => MurmurHash3.Hash32(bytes, (uint) seed);
+                    return func;
+                })
+                .ToArray();
         }
 
         public int Size
