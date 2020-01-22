@@ -7,18 +7,20 @@ describe("BloomFilter", function() {
 
   let subject
 
-  const FILTER_SIZE = 16
-  const HASH_COUNT = 2
-  const DEFAULT_HASH_COUNT = 4
+  const DEFAULT_FILTER_SIZE = 1024
+  const DEFAULT_HASH_COUNT = 8
 
-  context("when created with default hash count", function() {
+  const FILTER_SIZE = 512
+  const HASH_COUNT = 4
+
+  context("when created with default values", function() {
 
     beforeEach(function() {
-      subject = new BloomFilter(FILTER_SIZE)
+      subject = new BloomFilter()
     })
   
     it("it stores the size", function() {
-      expect(subject.size).to.equal(FILTER_SIZE)
+      expect(subject.size).to.equal(DEFAULT_FILTER_SIZE)
     })
 
     it("it stores the expected hash count", function() {
@@ -26,7 +28,7 @@ describe("BloomFilter", function() {
     })
 
     it("has the expected number of bits", function() {
-      expect(subject.bits).to.have.lengthOf(FILTER_SIZE)
+      expect(subject.bits).to.have.lengthOf(DEFAULT_FILTER_SIZE)
     })
 
     it("has the expected number of hashes", function() {
@@ -97,14 +99,22 @@ describe("BloomFilter", function() {
   
   })
 
-  context("when created with a specified hash count", function() {
+  context("when created with a specified size and hash count", function() {
 
     beforeEach(function() {
       subject = new BloomFilter(FILTER_SIZE, HASH_COUNT)
     })
   
+    it("it stores the expected size", function() {
+      expect(subject.size).to.equal(FILTER_SIZE)
+    })
+
     it("it stores the expected hash count", function() {
       expect(subject.hashCount).to.equal(HASH_COUNT)
+    })
+
+    it("has the expected number of bits", function() {
+      expect(subject.bits).to.have.lengthOf(FILTER_SIZE)
     })
 
     it("has the expected number of hashes", function() {
@@ -117,9 +127,6 @@ describe("BloomFilter", function() {
     expect(() => new BloomFilter(FILTER_SIZE, 0)).to.throw("You must have at least 1 hash")
   })
 
-  it("complains when created with too many hashes", function() {
-    expect(() => new BloomFilter(FILTER_SIZE, 5)).to.throw("You cannot have more than 4 hashes")
-  })
   it("complains when created with too small of a size", function() {
     expect(() => new BloomFilter(0)).to.throw("You must have at least 1 item in the filter")
   })

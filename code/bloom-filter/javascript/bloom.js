@@ -11,15 +11,16 @@ const hashFunctions = [
 
 class BloomFilter {
 
-  constructor(size, hashCount = 4) {
+  constructor(size = 1024, hashCount = 8) {
 
     if (size < 1) throw "You must have at least 1 item in the filter"
     if (hashCount < 1) throw "You must have at least 1 hash"
-    if (hashCount > hashFunctions.length) throw "You cannot have more than 4 hashes"
 
-    this.bits = new Array(size)
-    this.bits.fill(false)
-    this.hashes = hashFunctions.slice(0, hashCount)
+    this.bits = new Array(size).fill(false)
+    this.hashes = new Array(hashCount)
+      .fill(null)
+      .map(_ => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER))
+      .map(seed => s => murmur.v3(s, seed))
   }
 
   get size() {
