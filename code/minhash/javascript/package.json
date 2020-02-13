@@ -1,0 +1,16 @@
+{
+  "name": "minhash",
+  "main": "minhash.js",
+  "scripts": {
+    "test": "mocha spec/**/*-spec.js"
+  },
+  "author": "Guy Royse <guy@guyroyse.com>",
+  "private": true,
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.0.0"
+  },
+  "dependencies": {
+    "murmurhash": "0.0.2"
+  }
+}
