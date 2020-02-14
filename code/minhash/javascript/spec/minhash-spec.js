@@ -31,10 +31,13 @@ describe("MinHash", function() {
       expect(subject.hashes).to.have.lengthOf(DEFAULT_HASH_COUNT)
     })
 
-    it("minhashes a string", function() {
-      let result = subject.minhash(LIPSUM_A)
-      expect(result).to.be.a('set')
-      result.forEach(n => expect(n).to.be.a('number'))
+    it("complains when created with too few hashes", function() {
+      expect(() => new MinHash(SHINGLE_SIZE, 0)).to.throw("You must have at least 1 hash")
+    }) 
+  
+    it("complains when created with too small of a shingle size", function() {
+      expect(() => new MinHash(0, HASH_COUNT))
+        .to.throw("You must have at shingle size of at least 1")
     })
 
     it("computes the similarity of two minhash sets of identical strings", function() {
@@ -52,7 +55,97 @@ describe("MinHash", function() {
 
       expect(result).to.be.a('number')
     })
-    
+
+    describe("#minhash", function() {
+
+      it("minhashes a string", function() {
+        let result = subject.minhash(LIPSUM_A)
+        expect(result).to.be.a('set')
+        result.forEach(n => expect(n).to.be.a('number'))
+      })
+
+      describe("tokenizing strings", function() {
+
+        it("splits a string with spaces", function() {
+          expect(subject.tokenize("foo bar baz"))
+            .to.have.ordered.members(['foo', 'bar', 'baz'])
+        })
+
+        it("splits a string with whitespace", function() {
+          expect(subject.tokenize("foo  bar\r\n\tbaz"))
+            .to.have.ordered.members(['foo', 'bar', 'baz'])
+        })
+
+        it("splits a string surrounded with whitespace", function() {
+          expect(subject.tokenize("  foo bar baz \r\n\t"))
+            .to.have.ordered.members(['foo', 'bar', 'baz'])
+        })
+
+      })
+
+      describe("shinglizing words", function() {
+
+        it("shinglizes a wordlist using the default shingle size", function() {
+          expect(subject.shinglize(['foo', 'bar', 'baz', 'qux', 'quux']))
+            .to.have.ordered.members(['foo bar baz', 'bar baz qux', 'baz qux quux'])
+        })
+
+        it("shinglizes a wordlist using an overridden shingle size", function() {
+          subject.shingleSize = 2
+          expect(subject.shinglize(['foo', 'bar', 'baz', 'qux']))
+            .to.have.ordered.members(['foo bar', 'bar baz', 'baz qux'])
+        })
+
+        it("returns a single shingle with a wordlist of the same size as the shingle size", function() {
+          expect(subject.shinglize(['foo', 'bar', 'baz']))
+            .to.have.ordered.members(['foo bar baz'])
+        })
+
+        it("returns no shingles with a wordlist that is smaller than the shingle size", function() {
+          expect(subject.shinglize(['foo', 'bar'])).to.be.an('array').that.is.empty
+        })
+
+      })
+
+      describe("hashifying shingles", function() {
+
+        it("returns a number of hashes equal to the number of hash functions", function() {
+          expect(subject.hashify(['foo bar baz', 'bar baz qux', 'baz qux quux']))
+            .to.be.an('array')
+            .that.has.lengthOf(DEFAULT_HASH_COUNT)
+        })
+
+        it("returns only numbers", function() {
+          subject.hashify(['foo bar baz', 'bar baz qux', 'baz qux quux'])
+            .forEach(n => expect(n).to.be.a('number'))
+        })
+
+      })
+
+    })
+
+    describe("#similarity", function() {
+
+      it("computes a similarity for identical sets", function() {
+        let a = new Set([1, 2, 3])
+        let b = new Set([1, 2, 3])
+        expect(subject.similarity(a, b)).to.equal(1)
+      })
+
+      it("computes a similarity for completely different sets", function() {
+        let a = new Set([1, 2, 3])
+        let b = new Set([4, 5, 6])
+        expect(subject.similarity(a, b)).to.equal(0)
+      })
+
+      it("computes a similarity for overlapping sets", function() {
+        let a = new Set([1, 2, 3])
+        let b = new Set([3, 4, 5])
+        expect(subject.similarity(a, b)).to.equal(0.2)
+      })
+
+    })
+
   })
 
   context("when created with a specified shingle size and hash count", function() {
@@ -73,15 +166,6 @@ describe("MinHash", function() {
       expect(subject.hashes).to.have.lengthOf(HASH_COUNT)
     })
 
-  })
-
-  it("complains when created with too few hashes", function() {
-    expect(() => new MinHash(SHINGLE_SIZE, 0)).to.throw("You must have at least 1 hash")
-  }) 
-
-  it("complains when created with too small of a shingle size", function() {
-    expect(() => new MinHash(0, HASH_COUNT))
-      .to.throw("You must have at shingle size of at least 1")
   })
 
 })

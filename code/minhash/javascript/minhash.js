@@ -48,7 +48,7 @@ class MinHash {
     return this.hashes.map(hash => {
       return shingles
         .map(shingle => hash(shingle))
-        .reduce((soFar, num) => Math.min(soFar, num), Number.MAX_SAFE_INTEGER)
+        .reduce((min, num) => Math.min(min, num), Number.MAX_SAFE_INTEGER)
     })
   }
 }
