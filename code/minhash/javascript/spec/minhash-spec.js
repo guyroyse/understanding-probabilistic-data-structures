@@ -7,8 +7,8 @@ describe("MinHash", function() {
 
   let subject
 
-  DEFAULT_SHINGLE_SIZE = 3
-  DEFAULT_HASH_COUNT = 8
+  const DEFAULT_SHINGLE_SIZE = 3
+  const DEFAULT_HASH_COUNT = 8
 
   const SHINGLE_SIZE = 5
   const HASH_COUNT = 4
