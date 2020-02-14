@@ -1,6 +1,7 @@
 const murmur = require('murmurhash')
 
 class MinHash {
+
   constructor(shingleSize = 3, hashCount = 8) {
 
     if (shingleSize < 1) throw "You must have at shingle size of at least 1"
@@ -51,6 +52,7 @@ class MinHash {
         .reduce((min, num) => Math.min(min, num), Number.MAX_SAFE_INTEGER)
     })
   }
+
 }
 
 exports.MinHash = MinHash
