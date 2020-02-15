@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'com.guyroyse.probabilistic'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter:5.6.0'
+    testCompile 'org.hamcrest:hamcrest:2.2'
+    testCompile 'org.mockito:mockito-core:3.2.4'
+    compile 'commons-codec:commons-codec:1.14'
+}
