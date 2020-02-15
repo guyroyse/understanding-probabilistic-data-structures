@@ -13,6 +13,15 @@ describe("MinHash", function() {
   const SHINGLE_SIZE = 5
   const HASH_COUNT = 4
 
+  it("complains when created with too few hashes", function() {
+    expect(() => new MinHash(SHINGLE_SIZE, 0)).to.throw("You must have at least 1 hash")
+  }) 
+
+  it("complains when created with too small of a shingle size", function() {
+    expect(() => new MinHash(0, HASH_COUNT))
+      .to.throw("You must have at shingle size of at least 1")
+  })
+
   context("when created with default values", function() {
 
     beforeEach(function() {
@@ -29,15 +38,6 @@ describe("MinHash", function() {
   
     it("has the expected number of hashes", function() {
       expect(subject.hashes).to.have.lengthOf(DEFAULT_HASH_COUNT)
-    })
-
-    it("complains when created with too few hashes", function() {
-      expect(() => new MinHash(SHINGLE_SIZE, 0)).to.throw("You must have at least 1 hash")
-    }) 
-  
-    it("complains when created with too small of a shingle size", function() {
-      expect(() => new MinHash(0, HASH_COUNT))
-        .to.throw("You must have at shingle size of at least 1")
     })
 
     it("computes the similarity of two minhash sets of identical strings", function() {
