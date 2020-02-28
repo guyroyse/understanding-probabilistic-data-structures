@@ -77,7 +77,7 @@ class TopK {
     this.addToMinHeap(s)
   }
 
-  query(s) {
+  count(s) {
     return this.hashArrays
       .map(hashArray => {
         let fingerprint = hashArray.getFingerprintOf(s)
@@ -87,6 +87,10 @@ class TopK {
       .filter(bucket => bucket !== null)
       .map(bucket => bucket.counter)
       .reduce((previous, current) => Math.max(previous, current), 0)
+  }
+
+  query(s) {
+    return !!this.minHeap.toArray().find(item => item.s === s)
   }
 
   top() {
@@ -111,7 +115,7 @@ class TopK {
         return
       }
 
-      bucket.decay()
+      bucket.decay(this.decay)
       if (bucket.isEmpty()) {
         bucket.seize(fingerprint)
         bucket.increment()
@@ -123,7 +127,7 @@ class TopK {
 
   addToMinHeap(s) {
 
-    let count = this.query(s)
+    let count = this.count(s)
     let item = this.minHeap.toArray().find(item => item.s === s)
 
     if (item) {
