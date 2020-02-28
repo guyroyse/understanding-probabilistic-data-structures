@@ -1,0 +1,6 @@
+.DS_Store
+.vscode
+venv/
+__pycache__/
+nltk_data
+nuforc_reports.csv
