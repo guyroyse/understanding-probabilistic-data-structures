@@ -1,3 +1,3 @@
 # Understanding Probabilistic Data Structures with 112,092 UFO Sightings
 
-This is the git repository for my talk "Understanding Probabilistic Data Structures with 112,092 UFO Sightings". It contains the [abstract](ABSTRACT.md), [code](code), and a [link to the slides](https://redislabs.showpad.com/share/xwsAp95oe56xkLRxUb3dE) for the talk.
+This is the git repository for my talk "Understanding Probabilistic Data Structures with 112,092 UFO Sightings". It contains the [abstract](ABSTRACT.md), [code](code), and [slides](slides/understanding-probabilistic-data-structures.pdf) for the talk.
