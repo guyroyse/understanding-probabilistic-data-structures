@@ -4,3 +4,4 @@ venv/
 __pycache__/
 nltk_data
 nuforc_reports.csv
+data/dump.rdb
