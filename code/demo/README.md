@@ -1,15 +1,19 @@
 # The TopK is Out There
 
-python3 -m venv venv
+## Up and Running
 
-source venv/bin/activate
+    $ python3 -m venv venv
 
-pip install -r requirements.txt
+    $ source venv/bin/activate
 
-python -m nltk.downloader -d nltk_data all
+    $ pip install -r requirements.txt
 
-unzip nuforc_reports.zip
+    $ python -m nltk.downloader -d nltk_data all
 
-python build.py
+    $ unzip nuforc_reports.zip
 
-python app.py
+    $ ./start-redis.sh
+
+    $ python build.py
+
+    $ python app.py
