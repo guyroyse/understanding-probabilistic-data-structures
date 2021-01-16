@@ -20,7 +20,13 @@ def setup_rebloom():
   client = Client()
 
   # remove any old keys
-  client.delete('ufo_words', 'ufo_shapes')
+  words_exist = client.exists('ufo_words')
+  if (words_exist):
+    client.delete('ufo_words')
+
+  words_exist = client.exists('ufo_shapes')
+  if (words_exist):
+    client.delete('ufo_shapes')
 
   # setup some Top-K action!
   client.topkReserve('ufo_words', k=10, width=400, depth=10, decay=0.9)
@@ -34,12 +40,9 @@ def load_data(filename):
   df = pd.read_csv(filename, encoding='utf-8')
   print(f"Read {df.shape[0]} rows and {df.shape[1]} columns from '{filename}'.")
 
-  # drop all columns except 'text' and 'shape'
-  df = df.filter(items=['text', 'shape'])
+  # drop all columns except 'text' and 'shape' (and make 'em strings)
+  df = df.filter(items=['text', 'shape']).astype(str)
   print(f"Dropped all columns except {df.columns.to_list()}.")
-
-  # make sure they're all strings
-  df = df.astype(str)
 
   return df
 
