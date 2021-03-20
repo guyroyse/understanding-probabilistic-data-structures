@@ -3,7 +3,7 @@ Flask==1.1.2
 Flask-Cors==3.0.9
 hiredis==1.1.0
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 joblib==0.16.0
 MarkupSafe==1.1.1
 nltk==3.5
