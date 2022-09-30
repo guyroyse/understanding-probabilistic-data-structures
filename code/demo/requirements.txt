@@ -4,7 +4,7 @@ Flask-Cors==3.0.9
 hiredis==1.1.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
-joblib==0.16.0
+joblib==1.2.0
 MarkupSafe==1.1.1
 nltk==3.5
 numpy==1.19.2
