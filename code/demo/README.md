@@ -28,6 +28,6 @@ Start processing the data:
 
     $ python build.py
 
-Start the Flash app:
+Start the Flask app:
 
     $ python app.py
