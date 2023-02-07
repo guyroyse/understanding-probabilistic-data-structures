@@ -24,8 +24,8 @@ def shapes():
 @app.route('/words')
 def words():
 
-  top_words = [{ 
-    'word': word, 
+  top_words = [{
+    'word': word,
     'count': client.topkCount('ufo_words', word)[0]
   } for word in client.topkList('ufo_words')]
 
@@ -46,4 +46,4 @@ def send_static(path):
 
 # kick off the Flask application
 if __name__ == '__main__':
-  app.run()
+  app.run(debug = True, host = '0.0.0.0', port = 5001)
