@@ -8,7 +8,7 @@
   "private": true,
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.0.0"
+    "mocha": "^7.2.0"
   },
   "dependencies": {
     "heap": "^0.2.6",
